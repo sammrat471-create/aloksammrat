@@ -1,102 +1,327 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Alok Kumar (Alok Sammrat) — Official Profile</title>
-  <meta name="description" content="Alok Kumar, also known as Alok Sammrat — Student, Trader, Businessman and founder behind LuxeLayer. Based in Bounsi, Banka, Bihar." />
-  <meta name="keywords" content="Alok Kumar, Alok Sammrat, LuxeLayer, Student, Trader, Businessman, Bihar" />
-  <meta property="og:title" content="Alok Kumar (Alok Sammrat) — Official Profile" />
-  <meta property="og:description" content="Student | Trader | Businessman — 'Don’t give up your life'." />
-  <meta property="og:type" content="website" />
-  <meta name="theme-color" content="#111111">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CallingApp</title>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- CSS Styling -->
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Great+Vibes&display=swap');
-    :root{
-      --bg:#0f1216; --card:#141923; --muted:#94a3b8; --text:#e5e7eb; --brand:#ff7f50;
+    :root {
+      --wa-header-bg: #005c97;
+      --wa-accent-blue: #34B7F1;
+      --wa-message-out-bg: #e1f6fb;
+      --wa-message-in-bg: #ffffff;
+      --wa-app-bg: #f0f2f5;
+      --wa-chat-bg: #e5ddd5;
+      --wa-icon-color: #f0f2f5;
+      --wa-text-primary: #111b21;
+      --wa-text-secondary: #667781;
+      --wa-border-color: #e9edef;
+      --wa-active-tab-indicator: var(--wa-accent-blue);
+      --wa-button-color: #008069;
+      --wa-link-color: #00a8e8;
+      --wa-shadow: rgba(17, 27, 33, 0.15);
     }
-    *{box-sizing:border-box}
-    body{
-      margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
-      background: radial-gradient(1200px 600px at 80% -10%, #243042 0%, #0f1216 60%) no-repeat, var(--bg);
-      color:var(--text);
+
+    * { box-sizing: border-box; }
+    html, body {
+      height: 100%; width: 100%;
+      margin: 0; padding: 0;
+      display: flex; justify-content: center; align-items: center;
+      background: #d1d7db;
+      font-family: 'Roboto', sans-serif;
+      overflow: hidden;
     }
-    .wrap{max-width:900px;margin:auto;padding:24px}
-    .card{
-      background:linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:22px; padding:28px; box-shadow:0 10px 40px rgba(0,0,0,.35);
-      backdrop-filter: blur(6px);
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-thumb { background-color: var(--wa-accent-blue); border-radius: 4px; }
+
+    #app-container {
+      width: 100%; max-width: 450px;
+      height: 100%; max-height: 950px;
+      background: var(--wa-app-bg);
+      border-radius: 16px;
+      box-shadow: 0 4px 12px var(--wa-shadow);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
     }
-    .hero{display:flex; gap:24px; align-items:center; flex-wrap:wrap; flex-direction:column}
-    .pp{
-      width:160px;height:160px;border-radius:50%;object-fit:cover;border:4px solid var(--brand);
-      box-shadow:0 8px 24px rgba(0,0,0,.45)
-    }
-    h1{font-size:28px;margin:0 0 6px;text-align:center}
-    .tag{color:var(--muted);margin:0 0 10px;text-align:center}
-    .pill{display:inline-block;padding:8px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.1);color:var(--muted);margin:6px}
-    .grid{display:grid;gap:18px;margin-top:22px}
-    @media(min-width:720px){.grid{grid-template-columns:1.2fr .8fr}}
-    h2{font-size:18px;letter-spacing:.5px;margin:0 0 8px;color:#cbd5e1;text-transform:uppercase}
-    p{line-height:1.6;color:#cbd5e1;margin:0}
-    ul{margin:8px 0 0 18px;color:#cbd5e1}
-    a.btn{
-      display:inline-block;background:var(--brand);color:#111;font-weight:600;text-decoration:none;
-      padding:10px 16px;border-radius:12px;box-shadow:0 8px 24px rgba(255,127,80,.35);margin:8px
-    }
-    a.link{color:#93c5fd;text-decoration:none}
-    .sig{font-family:"Great Vibes", cursive; font-size:36px; margin-top:12px; opacity:.95; color:#ffddb0; text-align:center}
-    footer{margin:28px 0 8px;text-align:center;color:var(--muted);font-size:14px}
+
+    .view { display: none; flex-direction: column; height: 100%; }
+    .view.active { display: flex; }
+
+    /* Auth View */
+    #auth-view { justify-content: center; align-items: center; padding: 20px; }
+    #auth-view h1 { font-size: 2.5rem; color: var(--wa-header-bg); margin-bottom: 20px; text-align: center; }
+    form { display: flex; flex-direction: column; width: 100%; margin-bottom: 10px; }
+    input { padding: 10px; margin: 5px 0; border: 1px solid var(--wa-border-color); border-radius: 8px; }
+    input:focus { outline: none; border-color: var(--wa-accent-blue); }
+    button { padding: 10px; margin-top: 10px; border: none; border-radius: 8px; background: var(--wa-button-color); color: #fff; cursor: pointer; }
+    a { color: var(--wa-link-color); text-decoration: none; margin-top: 5px; font-size: 0.9rem; text-align: center; cursor: pointer; }
+
+    /* Main View */
+    .main-header { background: var(--wa-header-bg); color: #fff; display: flex; flex-direction: column; }
+    .header-top { display: flex; justify-content: space-between; align-items: center; padding: 10px; }
+    .header-top h2 { margin: 0; }
+    .icon-btn { background: none; border: none; fill: var(--wa-icon-color); cursor: pointer; }
+    .header-nav { display: flex; justify-content: space-around; border-top: 1px solid var(--wa-border-color); }
+    .nav-tab { flex: 1; text-align: center; padding: 10px 0; position: relative; cursor: pointer; color: #fff; }
+    .nav-tab.active { border-bottom: 3px solid var(--wa-active-tab-indicator); }
+    .badge { position: absolute; top: 2px; right: 20px; background: red; color: #fff; font-size: 0.7rem; border-radius: 50%; padding: 2px 6px; }
+
+    #main-content { flex: 1; overflow-y: auto; background: var(--wa-app-bg); }
+    .content-panel { display: none; padding: 10px; }
+    .content-panel.active { display: block; }
+
+    /* Chat View */
+    .chat-header { background: var(--wa-header-bg); color: #fff; display: flex; justify-content: space-between; align-items: center; padding: 10px; }
+    #chat-messages { flex: 1; padding: 10px; overflow-y: auto; background: var(--wa-chat-bg); 
+      background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23bdbdbd' fill-opacity='0.15' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E"); }
+    .message-bubble { padding: 8px 12px; margin: 5px 0; border-radius: 12px; max-width: 70%; display: inline-block; }
+    .message-sent { background: var(--wa-message-out-bg); align-self: flex-end; border-bottom-right-radius: 2px; }
+    .message-received { background: var(--wa-message-in-bg); align-self: flex-start; border-bottom-left-radius: 2px; }
+    #chat-input-container { display: flex; padding: 10px; border-top: 1px solid var(--wa-border-color); }
+    #chat-input { flex: 1; padding: 8px 12px; border-radius: 20px; border: 1px solid var(--wa-border-color); }
+    #chat-send-btn { margin-left: 5px; border-radius: 50%; padding: 10px; background: var(--wa-accent-blue); color: #fff; border: none; cursor: pointer; }
+
+    /* Call Views */
+    .call-view { display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #000; z-index: 1000; }
+    .call-view.active { display: flex; justify-content: center; align-items: center; flex-direction: column; }
+    #remote-video, #local-video { border-radius: 12px; background: #000; }
+    #local-video { width: 120px; height: 90px; position: absolute; top: 10px; right: 10px; cursor: move; }
+    .call-overlay { position: absolute; bottom: 0; width: 100%; background: linear-gradient(to top, rgba(0,0,0,0.7), transparent); padding: 20px; color: #fff; display: flex; justify-content: space-between; align-items: center; }
+    .call-controls button { margin-left: 10px; padding: 10px; border-radius: 50%; border: none; cursor: pointer; }
+    .end-call { background: #e91e63; color: #fff; }
+    .accept-call { background: #4CAF50; color: #fff; }
+
+    /* Modals */
+    .modal { display: none; position: absolute; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 2000; }
+    .modal.active { display: flex; }
+    .modal-content { background: #fff; border-radius: 12px; padding: 20px; width: 90%; max-width: 350px; }
+    .list-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--wa-border-color); }
+    .list-item .details { flex: 1; margin-left: 10px; }
+    .list-item .actions button { margin-left: 5px; }
   </style>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 </head>
 <body>
-  <div class="wrap">
-    <div class="card">
-      <section class="hero">
-        <img class="pp" src="https://raw.githubusercontent.com/sammrat471-create/LuxeLayer/main/images/463177221_903679618324192_1185175068109341406_n.jpg" alt="Alok Kumar (Alok Sammrat)">
-        <div class="sig">Alok&nbsp;Kumar</div>
-      </section>
-
-      <h1>Alok Kumar <span style="opacity:.7">but I am also known as(Alok Sammrat)</span></h1>
-      <p class="tag">Student • Trader • Businessman</p>
-      <div style="text-align:center;margin-bottom:20px">
-        <span class="pill">Bounsi, Banka, Bihar</span>
-        <span class="pill">“Don’t give up your life.”</span>
-      </div>
-
-      <div style="text-align:center">
-        <a class="btn" href="mailto:aloksammrat12345@gmail.com">Email</a>
-        <a class="btn" href="https://instagram.com/aloksammrat983" target="_blank" rel="noopener">Instagram</a>
-      </div>
-
-      <section class="grid">
-        <div>
-          <h2>About</h2>
-          <p><b>Alok Kumar</b>, popularly known as <b>Alok Sammrat</b>, is the same person.  
-          He is a young student, trader, and businessman from Bihar, India. At a very early age, he started working towards building a strong future by balancing studies, disciplined trading, and business ventures.  
-          He is also the founder of <b>LuxeLayer</b>, a premium fashion and lifestyle brand under Sammrat Group Pvt. Ltd.  
-          His motto in life is simple yet powerful — <i>“Don’t give up your life.”</i></p>
-        </div>
-        <div>
-          <h2>Work</h2>
-          <ul>
-            <li><b>Founder</b> — <span style="opacity:.9">LuxeLayer</span> (under Sammrat Group Pvt. Ltd.)</li>
-            <li><b>Independent Trader</b> — Stocks, Crypto &amp; Forex</li>
-            <li><b>Student</b> — constantly learning and growing</li>
-          </ul>
-        </div>
-      </section>
-
-      <section style="margin-top:20px">
-        <h2>Contact</h2>
-        <p>📧 <a class="link" href="mailto:aloksammrat12345@gmail.com">aloksammrat12345@gmail.com</a> &nbsp;|&nbsp;
-           📸 <a class="link" href="https://instagram.com/aloksammrat983" target="_blank" rel="noopener">@aloksammrat983</a>
-        </p>
-      </section>
+  <div id="app-container">
+    <!-- Auth View -->
+    <div id="auth-view" class="view active">
+      <h1>CallingApp</h1>
+      <form id="login-form">
+        <input type="email" placeholder="Email" required>
+        <input type="password" placeholder="Password" required>
+        <button type="submit">Login</button>
+        <div id="login-error" style="color:red;"></div>
+        <a id="show-signup">Don't have an account? Signup</a>
+      </form>
+      <form id="signup-form" style="display:none;">
+        <input type="email" placeholder="Email" required>
+        <input type="password" placeholder="Password" required>
+        <input type="text" placeholder="Username" required>
+        <button type="submit">Signup</button>
+        <div id="signup-error" style="color:red;"></div>
+        <a id="show-login">Already have account? Login</a>
+      </form>
     </div>
 
-    <footer>© 2025 Alok Kumar (Alok Sammrat). All rights reserved.</footer>
+    <!-- Main View -->
+    <div id="main-view" class="view">
+      <header class="main-header">
+        <div class="header-top">
+          <h2>CallingApp</h2>
+          <div>
+            <button class="icon-btn" id="add-friend-btn">+</button>
+            <button class="icon-btn" id="menu-btn">☰</button>
+          </div>
+        </div>
+        <div class="header-nav">
+          <div class="nav-tab active" id="nav-home">Chats <span class="badge" id="home-badge">0</span></div>
+          <div class="nav-tab" id="nav-notifications">Updates <span class="badge" id="notifications-badge">0</span></div>
+          <div class="nav-tab" id="nav-calls">Calls <span class="badge" id="calls-badge">0</span></div>
+        </div>
+      </header>
+      <main id="main-content">
+        <div class="content-panel active" id="home-content"></div>
+        <div class="content-panel" id="notifications-content"></div>
+        <div class="content-panel" id="calls-content"></div>
+      </main>
+    </div>
+
+    <!-- Chat View -->
+    <div id="chat-view" class="view">
+      <header class="chat-header">
+        <button id="back-to-main">←</button>
+        <span id="chat-partner-name">Username</span>
+        <div>
+          <button id="voice-call-btn">🎤</button>
+          <button id="video-call-btn">📹</button>
+          <button id="chat-more-btn">⋮</button>
+        </div>
+      </header>
+      <div id="chat-messages"></div>
+      <div id="chat-input-container">
+        <input type="text" id="chat-input" placeholder="Type a message">
+        <button id="chat-send-btn">➤</button>
+      </div>
+    </div>
+
+    <!-- Call Views -->
+    <div id="video-call-view" class="call-view">
+      <video id="remote-video" autoplay playsinline></video>
+      <video id="local-video" autoplay muted playsinline></video>
+      <div class="call-overlay">
+        <span id="caller-info">Calling...</span>
+        <div class="call-controls">
+          <button class="end-call" id="end-video-call-btn">End</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="voice-call-view" class="call-view">
+      <audio id="remote-audio" autoplay></audio>
+      <div class="call-overlay">
+        <span id="caller-info-voice">Calling...</span>
+        <div class="call-controls">
+          <button class="end-call" id="end-voice-call-btn">End</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="profile-setup-modal" class="modal">
+      <div class="modal-content">
+        <h3>Set Up Profile</h3>
+        <input type="text" id="profile-username" placeholder="Username">
+        <button id="save-profile-btn">Save</button>
+      </div>
+    </div>
+
+    <div id="add-friend-modal" class="modal">
+      <div class="modal-content">
+        <h3>Add Friend</h3>
+        <input type="text" id="friend-username" placeholder="Friend's Username">
+        <button id="send-friend-request-btn">Send Request</button>
+      </div>
+    </div>
+
+    <div id="profile-view-modal" class="modal">
+      <div class="modal-content">
+        <h3>Your Profile</h3>
+        <p id="profile-info"></p>
+        <h4>Blocked Users</h4>
+        <div id="blocked-users-list"></div>
+        <button id="logout-btn">Logout</button>
+      </div>
+    </div>
+
+    <div id="incoming-call-modal" class="modal">
+      <div class="modal-content">
+        <h3>Incoming Call</h3>
+        <p id="incoming-caller">Username</p>
+        <button class="accept-call" id="accept-call-btn">Accept</button>
+        <button class="end-call" id="reject-call-btn">Reject</button>
+      </div>
+    </div>
+
+    <!-- Audio -->
+    <audio id="ringtone" loop src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA="></audio>
   </div>
-</body>
-</html>
+
+  <!-- JS Logic -->
+  <script>
+    // Firebase config placeholder
+    const firebaseConfig = {
+  apiKey: "AIzaSyC6RUe5BSS3aB_saIf-QaIMGHG4LHbmIS8",
+  authDomain: "indichat-721a7.firebaseapp.com",
+  databaseURL: "https://indichat-721a7-default-rtdb.firebaseio.com",
+  projectId: "indichat-721a7",
+  storageBucket: "indichat-721a7.firebasestorage.app",
+  messagingSenderId: "750594788841",
+  appId: "1:750594788841:web:dc299e536c5240efb64f78",
+  measurementId: "G-9DYS7PCDFE"
+};
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.database();
+
+    // Global State
+    let currentUser = null;
+    let currentChatPartner = null;
+    let peerConnection = null;
+    let localStream = null;
+
+    // Utility Functions
+    function showView(id) {
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+    function showModal(id) { document.getElementById(id).classList.add('active'); }
+    function hideModal(id) { document.getElementById(id).classList.remove('active'); }
+    function showPanel(id) {
+      document.querySelectorAll('.content-panel').forEach(p => p.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    // Example Event Listeners
+    document.getElementById('show-signup').addEventListener('click', () => {
+      document.getElementById('login-form').style.display='none';
+      document.getElementById('signup-form').style.display='flex';
+    });
+    document.getElementById('show-login').addEventListener('click', () => {
+      document.getElementById('signup-form').style.display='none';
+      document.getElementById('login-form').style.display='flex';
+    });
+
+    // Authentication logic
+    auth.onAuthStateChanged(user => {
+      if(user){
+        currentUser = user;
+        // Load profile
+        db.ref('users/' + user.uid).once('value').then(snapshot => {
+          const profile = snapshot.val();
+          if(!profile || !profile.username){
+            showModal('profile-setup-modal');
+          } else {
+            showView('main-view');
+          }
+        });
+      } else {
+        showView('auth-view');
+      }
+    });
+
+    document.getElementById('login-form').addEventListener('submit', e=>{
+      e.preventDefault();
+      const email = e.target[0].value;
+      const password = e.target[1].value;
+      auth.signInWithEmailAndPassword(email,password).catch(err=>document.getElementById('login-error').innerText=err.message);
+    });
+
+    document.getElementById('signup-form').addEventListener('submit', e=>{
+      e.preventDefault();
+      const email = e.target[0].value;
+      const password = e.target[1].value;
+      const username = e.target[2].value.trim();
+      if(!username) { document.getElementById('signup-error').innerText="Username required"; return; }
+      auth.createUserWithEmailAndPassword(email,password).then(cred=>{
+        db.ref('users/'+cred.user.uid).set({username});
+      }).catch(err=>document.getElementById('signup-error').innerText=err.message);
+    });
+
+    document.getElementById('save-profile-btn').addEventListener('click', ()=>{
+      const username = document.getElementById('profile-username').value.trim();
+      if(username && currentUser){
+        db.ref('users/' + currentUser.uid).update({username});
